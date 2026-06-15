@@ -1,6 +1,7 @@
 import Header from "./Header";
 import Footer from "./Footer";
 import Card from "./Card";
+import Button from "./Button/Button";
 
 function App() {
   return (
@@ -8,7 +9,7 @@ function App() {
       <Header></Header>
       <Card />
       <br />
-      <Card />
+      <Button />
       <Footer></Footer>
     </>
   );
