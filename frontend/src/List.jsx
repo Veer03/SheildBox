@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 function List(props) {
   //   fruits.sort((a, b) => a.name.localeCompare(b.name)); // sort fruits by name
   // uniques for each item in the
@@ -7,6 +9,9 @@ function List(props) {
 
   const itemsList = props.items;
   const category = props.category;
+
+  // updtae array
+  const [food, setFood] = useState(["Apple"]);
 
   const lowCalFruits = itemsList.filter((fruit) => {
     return fruit.cal < 100;
@@ -24,9 +29,36 @@ function List(props) {
       <b>{fruit.cal}</b>
     </li>
   ));
+
+  function handleAddFood() {
+    const newFood = document.getElementById("foodInput").value;
+    document.getElementById("foodInput").value = "";
+
+    setFood((f) => [...f, newFood]);
+  }
+  function handleRemoveFood(index) {
+    setFood(food.filter((_, i) => i !== index));
+  }
   return (
     <>
       <div>
+        <div>
+          <h1>List of food</h1>
+          <ul>
+            {food.map((food, index) => (
+              <li
+                key={index}
+                onClick={() => {
+                  handleRemoveFood(index);
+                }}
+              >
+                {food}{" "}
+              </li>
+            ))}
+          </ul>
+          <input id="foodInput" type="text" placeholder="enter food name" />
+          <button onClick={handleAddFood}>add food</button>
+        </div>
         <b>
           <i>Low-Calorie Fruits</i>
         </b>

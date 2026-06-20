@@ -11,11 +11,14 @@ function MyComponent() {
   // can use the sam thing in radio button, <select>!!<option>(thhis is dropdown)
   //  and checkbox as well
 
+  //update obeject
+  const [car, updateCar] = useState({ year: "2026", model: "ford" });
+
   const updateName = () => {
     setName("Veer");
   };
   const incAge = () => {
-    setAge((a) => a + 1);
+    setAge((a) => a + 1); //update function!!
   };
   return (
     <>
@@ -59,6 +62,18 @@ function MyComponent() {
         <p>
           <b>Comment: {CommentChange}</b>
         </p>
+      </div>
+      <div>
+        <h1>Fav car!:</h1>
+        <p>
+          your fav car is: {car.year} and teh model:{car.model}
+        </p>
+        <input
+          value={car.year}
+          onChange={(event) => {
+            updateCar((c) => ({ ...c, year: event.target.value }));
+          }}
+        />
       </div>
     </>
   );
