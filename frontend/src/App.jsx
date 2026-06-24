@@ -1,41 +1,42 @@
-import Header from "./Header";
-import Footer from "./Footer";
-import Card from "./Card";
-import Button from "./Button/Button";
-import Student from "./Student";
-import List from "./List";
-import MyComponent from "./MyComponent";
-
+import { useState } from "react";
 function App() {
-  const fruits = [
-    { id: 1, name: "Apple", cal: 95 },
-    { id: 2, name: "Banana", cal: 105 },
-    { id: 3, name: "Cherry", cal: 50 },
-    { id: 4, name: "Date", cal: 110 },
-    { id: 5, name: "Elderberry", cal: 120 },
-  ];
-  const vegetables = [
-    { id: 1, name: "Carrot", cal: 25 },
-    { id: 2, name: "Broccoli", cal: 55 },
-    { id: 3, name: "Spinach", cal: 20 },
-    { id: 4, name: "Potato", cal: 150 },
-    { id: 5, name: "Tomato", cal: 30 },
-  ];
+  const [file, setFile] = useState(null);
+  const [status, setStatus] = useState("");
+
+  function handleFileChange(e) {
+    setFile(e.target.files[0]);
+  }
+
+  async function handleUpload() {
+    if (!file) {
+      setStatus("Pick a file first");
+      return;
+    }
+    setStatus("Uploading...");
+    const formData = new FormData();
+    formData.append("file", file);
+    try {
+      const res = await fetch("http://127.0.0.1:8000/api/split", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      setStatus(`Done: ${data.message}`);
+    } catch (err) {
+      console.error(err);
+      setStatus("Error connecting to backend");
+    }
+  }
+
   return (
     <>
-      <Header></Header>
-      <Card />
-      <MyComponent />
-      <br />
-      <Student name="SpongeBob" age={30} isStudent={true} />
-      <Student name="Patrick" age={40} isStudent={false} />
-      <Student />
-      {fruits.length > 0 ? <List items={fruits} category="All Fruits" /> : null}
-      {vegetables.length > 0 ? (
-        <List items={vegetables} category="All Vegetables" />
-      ) : null}
-      <Button />
-      <Footer></Footer>
+      <div style={{ padding: "40px", fontFamily: "sans-serif" }}>
+        <h1>DocuFlow</h1>
+        <input type="file" accept=".xlsx" onChange={handleFileChange} />
+        <button onClick={handleUpload}>Split it</button>
+        <p>{status}</p>
+      </div>
     </>
   );
 }

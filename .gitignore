@@ -11,3 +11,4 @@ dist/
 # Local IDE files
 .vscode/
 .DS_Store
+venv/
