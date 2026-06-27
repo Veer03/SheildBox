@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./ExcelSplitter.css";
 
-function ExcelSplitter({ onBack }) {
+function ExcelSplitter() {
+  const navigate = useNavigate();
   const [file, setFile] = useState(null);
   const [columns, setColumns] = useState([]); // Dynamic columns array
   const [selectedColumn, setSelectedColumn] = useState("");
@@ -33,7 +35,6 @@ function ExcelSplitter({ onBack }) {
       }
 
       const data = await res.json();
-      //here!
       setColumns(data.columns);
 
       if (data.columns.length > 0) {
@@ -96,7 +97,8 @@ function ExcelSplitter({ onBack }) {
 
   return (
     <div className="splitter-container">
-      <button onClick={onBack} className="back-btn">
+      {/* Replaced custom onBack prop with programmatic hook routing */}
+      <button onClick={() => navigate("/")} className="back-btn">
         ← Back to Dashboard
       </button>
 
