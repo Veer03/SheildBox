@@ -5,7 +5,9 @@ function App() {
   return (
     <div className="app-wrapper">
       <div className="dashboard-container">
-        <h1 className="brand-title">DocuFlow</h1>
+        <h1 className="brand-title">
+          <i>DocuFlow</i>
+        </h1>
         <p className="brand-description">
           Welcome to DocuFlow! Your ultimate workspace to split spreadsheets,
           convert documents, and automate your heavy file processing workflows
@@ -35,15 +37,6 @@ function App() {
             <p className="card-text">
               Extract and format rich layout text structures directly from
               read-only PDF sheets into editable `.docx` files.
-            </p>
-          </div>
-
-          <div className="card disabled-card">
-            <div className="counter locked-tag">Coming Soon</div>
-            <h3 className="card-heading">Convert Word into PDF</h3>
-            <p className="card-text">
-              Lock structural fonts, element placements, and file alignment
-              configurations by compiling Word blocks safely to PDF.
             </p>
           </div>
         </div>

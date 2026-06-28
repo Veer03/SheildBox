@@ -5,12 +5,10 @@ import "./ExcelSplitter.css";
 function ExcelSplitter() {
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
-  const [columns, setColumns] = useState([]); // Dynamic columns array
+  const [columns, setColumns] = useState([]);
   const [selectedColumn, setSelectedColumn] = useState("");
-  const [headerColor, setHeaderColor] = useState("#2e7d32");
   const [status, setStatus] = useState("");
 
-  // Triggered instantly when a file is picked
   async function handleFileChange(e) {
     const pickedFile = e.target.files[0];
     if (!pickedFile) return;
@@ -58,7 +56,7 @@ function ExcelSplitter() {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("split_column", selectedColumn);
-    formData.append("header_color", headerColor);
+    formData.append("header_color", "#a855f7"); // Defaults elegantly to our neon purple brand color
 
     try {
       const res = await fetch("http://127.0.0.1:8000/api/split", {
@@ -96,66 +94,70 @@ function ExcelSplitter() {
   }
 
   return (
-    <div className="splitter-container">
-      {/* Replaced custom onBack prop with programmatic hook routing */}
+    <div className="workspace-view animate-fade">
       <button onClick={() => navigate("/")} className="back-btn">
         ← Back to Dashboard
       </button>
 
-      <h2>Excel Splitter</h2>
-
-      <div className="form-group">
-        <label>Choose Excel File:</label>
-        <input type="file" accept=".xlsx" onChange={handleFileChange} />
-      </div>
-
-      <div className="form-group">
-        <label>Target Split Column:</label>
-        {columns.length > 0 ? (
-          <select
-            value={selectedColumn}
-            onChange={(e) => setSelectedColumn(e.target.value)}
-            className="text-input"
-            style={{ padding: "6px", cursor: "pointer" }}
-          >
-            {columns.map((col, idx) => (
-              <option key={idx} value={col}>
-                {col}
-              </option>
-            ))}
-          </select>
-        ) : (
-          <input
-            type="text"
-            placeholder="Upload a file to see columns..."
-            disabled
-            className="text-input"
-          />
-        )}
-      </div>
-
-      <div className="form-group-color">
-        <label>Header Theme Color:</label>
-        <div className="color-picker-row">
-          <input
-            type="color"
-            value={headerColor}
-            onChange={(e) => setHeaderColor(e.target.value)}
-            className="color-input"
-          />
-          <code>{headerColor}</code>
+      <div className="workspace-panel">
+        <div className="panel-header">
+          <h2>Excel Splitter</h2>
+          <p>
+            Segment massive workbook registries into individual standalone files
+            dynamically.
+          </p>
         </div>
+
+        <div className="form-group">
+          <label className="field-label">Choose Excel File</label>
+          <div className="file-upload-zone">
+            <input
+              type="file"
+              accept=".xlsx"
+              onChange={handleFileChange}
+              className="file-input-hidden"
+              id="excel-file"
+            />
+            <label htmlFor="excel-file" className="file-upload-label">
+              {file ? `📄 ${file.name}` : "Click to browse or drop file here"}
+            </label>
+          </div>
+        </div>
+
+        <div className="form-group">
+          <label className="field-label">Target Split Column</label>
+          {columns.length > 0 ? (
+            <select
+              value={selectedColumn}
+              onChange={(e) => setSelectedColumn(e.target.value)}
+              className="tech-select"
+            >
+              {columns.map((col, idx) => (
+                <option key={idx} value={col}>
+                  {col}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <input
+              type="text"
+              placeholder="Upload a spreadsheet to load active headers..."
+              disabled
+              className="tech-input"
+            />
+          )}
+        </div>
+
+        <button
+          onClick={handleUpload}
+          className="action-btn"
+          disabled={!selectedColumn}
+        >
+          Execute Automation Split
+        </button>
+
+        {status && <p className="tech-status">{status}</p>}
       </div>
-
-      <button
-        onClick={handleUpload}
-        className="submit-btn"
-        disabled={!selectedColumn}
-      >
-        Split it
-      </button>
-
-      <p className="status-text">{status}</p>
     </div>
   );
 }

@@ -14,6 +14,10 @@ const router = createBrowserRouter([
     path: "/splitter",
     element: <ExcelSplitter />,
   },
+  {
+    path: "/wordToPdf",
+    element: <wToP />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
